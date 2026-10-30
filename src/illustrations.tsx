@@ -1,42 +1,44 @@
 import React from 'react';
 
-export const Petal: React.FC<{className?: string}> = ({className = ''}) => <svg className={className} viewBox="0 0 120 120" fill="none" aria-hidden="true"><path d="M60 60C30 42 31 15 47 10c12-4 20 9 13 50ZM60 60c28-25 51-17 50 1-1 13-16 17-50-1ZM60 60c9 36-7 51-23 41-11-8-8-23 23-41Z" fill="#F4B9C6"/><circle cx="60" cy="60" r="8" fill="#C76E88"/><path d="M59 68c-4 20-16 32-28 40M61 68c12 18 24 25 40 29" stroke="#8B9E80" strokeWidth="3" strokeLinecap="round"/></svg>;
-
-export const CoupleIllustration: React.FC<{className?: string}> = ({className = ''}) => <svg className={className} viewBox="0 0 520 480" fill="none" role="img" aria-label="Minh họa cô dâu và chú rể Quang Trưởng, Hồng Nhung">
-  <circle cx="260" cy="229" r="177" fill="#FFF8F5" stroke="#E7B8C4" strokeWidth="2"/>
-  <path d="M94 350c-30-40-47-83-44-130M426 350c30-40 47-83 44-130" stroke="#DB9DB1" strokeWidth="3" strokeLinecap="round"/>
-  <path d="M56 225c-20-8-28-25-18-36 12-11 26 5 18 36ZM70 270c-19-3-30-19-24-32 8-15 28-3 24 32ZM464 225c20-8 28-25 18-36-12-11-26 5-18 36ZM450 270c19-3 30-19 24-32-8-15-28-3-24 32Z" fill="#EEC5CF"/>
-  <path d="M127 356c20-81 75-101 132-87 71-13 128 6 145 87l-20 38H143l-16-38Z" fill="#F5DDE3" stroke="#C9879C" strokeWidth="3"/>
-  <path d="M244 289c-15-22-27-30-51-29-41 3-61 52-62 112h138l-25-83Z" fill="#FFFDFB" stroke="#D8A9B8" strokeWidth="3"/>
-  <path d="M279 287c21-25 43-31 65-25 39 10 55 60 52 110H263l16-85Z" fill="#9A6578" stroke="#815166" strokeWidth="3"/>
-  <path d="M245 273l21 20-19 54-25-64M280 274l-15 19 22 52 18-62" fill="#FFFDFB" stroke="#D8A9B8" strokeWidth="3"/>
-  <path d="M266 294l-10 12 11 28 11-28-12-12Z" fill="#D88DA2"/>
-  <path d="M163 194c-15-35-5-81 27-104 42-31 91-14 111 19 35 55 5 143-47 165-54 23-86-29-91-80Z" fill="#6A4656"/>
-  <ellipse cx="224" cy="188" rx="61" ry="78" fill="#F7D7C7"/>
-  <path d="M164 161c12-53 56-84 98-66 28 13 30 42 23 61-24-4-45-17-61-32-20 22-37 31-60 37Z" fill="#654353"/>
-  <path d="M189 187h9M237 187h9" stroke="#73515C" strokeWidth="4" strokeLinecap="round"/>
-  <path d="M207 218c9 9 22 9 31 0" stroke="#BC758B" strokeWidth="3" strokeLinecap="round"/>
-  <path d="M281 166c-3-42 24-73 60-76 43-4 77 27 78 72 2 21-5 54-12 71l-104 2-22-69Z" fill="#56424D"/>
-  <ellipse cx="348" cy="190" rx="62" ry="76" fill="#F2D0C1"/>
-  <path d="M287 167c3-55 40-84 80-75 33 7 52 39 48 69-22-2-47-13-63-31-13 20-33 32-65 37Z" fill="#55414C"/>
-  <path d="M317 189h9M367 189h9" stroke="#73515C" strokeWidth="4" strokeLinecap="round"/>
-  <path d="M338 221c8 7 20 7 28 0" stroke="#B97488" strokeWidth="3" strokeLinecap="round"/>
-  <path d="M161 118c-9-20-7-35 7-43 14-8 25 3 30 17M178 80c7-21 20-30 34-23 12 7 10 22 1 37" fill="#FFFDFB" stroke="#E6B6C2" strokeWidth="3"/>
-  <path d="M152 119c31-25 65-34 105-16" stroke="#E9A5B8" strokeWidth="5" strokeLinecap="round"/>
-  <circle cx="153" cy="116" r="10" fill="#F2B9C8"/><circle cx="185" cy="99" r="9" fill="#F2B9C8"/><circle cx="214" cy="95" r="8" fill="#F2B9C8"/>
-  <path d="M107 412c89 18 211 18 306 0" stroke="#E5B4C1" strokeWidth="3" strokeLinecap="round"/>
-  <path d="M89 108c7-22 14-29 24-7 8-22 17-15 24 6-6 16-15 22-24 32-10-10-19-17-24-31ZM392 73c4-13 8-17 15-4 5-13 11-9 15 3-5 10-10 14-16 20-6-6-11-10-14-19Z" fill="#E9A8BA"/>
+export const Petal: React.FC<{className?: string}> = ({className = ''}) => <svg className={className} viewBox="0 0 150 150" fill="none" aria-hidden="true">
+  <defs><linearGradient id="petal-blush" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#FFE4E9"/><stop offset=".65" stopColor="#F3B8C8"/><stop offset="1" stopColor="#D890A7"/></linearGradient><linearGradient id="petal-leaf" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#C4D5B7"/><stop offset="1" stopColor="#7C9C80"/></linearGradient><filter id="petal-shadow"><feDropShadow dx="0" dy="4" stdDeviation="3" floodColor="#9B6B80" floodOpacity=".22"/></filter></defs>
+  <path d="M73 78c-5 25-13 45-30 63M75 81c11 25 23 39 39 50" stroke="#8DA58D" strokeWidth="4" strokeLinecap="round"/>
+  <path d="M56 112c-14-5-27-2-34 10 14 10 27 9 36-7ZM95 112c13-8 25-6 34 4-11 14-25 15-36-1Z" fill="url(#petal-leaf)" stroke="#78977D" strokeWidth="2"/>
+  <g filter="url(#petal-shadow)" stroke="#CD8EA3" strokeWidth="2"><path d="M74 76C39 58 36 27 51 18c17-10 31 10 23 58Z" fill="url(#petal-blush)"/><path d="M74 76c-2-45 15-65 33-56 20 10 13 37-33 56Z" fill="url(#petal-blush)"/><path d="M74 76c38-27 65-17 62 3-4 19-28 23-62-3Z" fill="url(#petal-blush)"/><path d="M74 76c25 36 15 61-7 60-19-2-25-27 7-60Z" fill="url(#petal-blush)"/><path d="M74 76C36 105 13 98 15 78c2-20 29-24 59-2Z" fill="url(#petal-blush)"/></g>
+  <circle cx="74" cy="76" r="14" fill="#F8E0AC" stroke="#C79877" strokeWidth="2"/><circle cx="69" cy="72" r="2" fill="#C58E72"/><circle cx="80" cy="73" r="2" fill="#C58E72"/><circle cx="74" cy="82" r="2" fill="#C58E72"/>
+  <path d="M54 33c8 5 11 11 13 21m39-26c-9 5-14 13-19 24m32 31c-11-5-21-5-28-2M30 81c9-3 19-2 27 1" stroke="#FFF7F4" strokeWidth="3" strokeLinecap="round" opacity=".8"/>
 </svg>;
 
 export const GiftIllustration: React.FC<{open?: boolean; className?: string}> = ({open = false, className = ''}) => <svg className={className} viewBox="0 0 360 300" fill="none" role="img" aria-label={open ? 'Hộp quà đang mở' : 'Hộp quà bí ẩn'}>
-  <ellipse cx="180" cy="264" rx="125" ry="13" fill="#EAD0D6"/>
-  {open && <><path d="M139 86c-25-27-7-48 15-31 15 12 19 31 26 42-2-36 24-55 42-37 19 19-4 37-42 37" fill="#F8D7E0" stroke="#BD718B" strokeWidth="5"/><path d="M82 112 64 84l42 13M279 112l24-29-45 12" stroke="#D78DA3" strokeWidth="5" strokeLinecap="round"/><circle cx="69" cy="126" r="5" fill="#D78DA3"/><circle cx="292" cy="128" r="5" fill="#D78DA3"/></>}
-  <rect x="77" y="125" width="206" height="125" rx="14" fill="#F5B9C9" stroke="#AB6880" strokeWidth="5"/>
-  <path d="M77 159h206" stroke="#AB6880" strokeWidth="5"/>
-  <path d="M159 125v125h42V125" fill="#FFF6EE" stroke="#B97991" strokeWidth="4"/>
-  {open ? <path d="M69 115 80 82c5-18 18-22 35-18l180 42c17 4 23 17 16 34l-9 18-233-43Z" fill="#FBD4DE" stroke="#AB6880" strokeWidth="5"/> : <><rect x="62" y="111" width="236" height="46" rx="11" fill="#FBD4DE" stroke="#AB6880" strokeWidth="5"/><path d="M160 112v45h40v-45" fill="#FFF6EE" stroke="#B97991" strokeWidth="4"/><path d="M180 111c-42-4-61-14-60-32 1-16 17-21 32-12 17 11 23 30 28 44Zm0 0c42-4 61-14 60-32-1-16-17-21-32-12-17 11-23 30-28 44Z" fill="#F5B9C9" stroke="#AB6880" strokeWidth="5"/></>}
-  <path d="M178 199c5-13 18-12 21-3 3 10-11 19-20 27-10-8-22-18-20-27 3-9 15-10 19 3Z" fill="#BA708B"/>
+  <defs>
+    <linearGradient id="gift-front" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#FFDCE5"/><stop offset=".55" stopColor="#F2B9CA"/><stop offset="1" stopColor="#D88FA8"/></linearGradient>
+    <linearGradient id="gift-side" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#D894AA"/><stop offset="1" stopColor="#B66E89"/></linearGradient>
+    <linearGradient id="gift-lid" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#FFF3F3"/><stop offset=".55" stopColor="#FAD4DF"/><stop offset="1" stopColor="#E6A7BB"/></linearGradient>
+    <linearGradient id="gift-ribbon" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#FFF8E9"/><stop offset=".55" stopColor="#F3E0C4"/><stop offset="1" stopColor="#D9B88F"/></linearGradient>
+    <filter id="gift-shadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="8" floodColor="#A26680" floodOpacity=".28"/></filter>
+  </defs>
+  <ellipse cx="185" cy="262" rx="123" ry="15" fill="#E8C5CE" opacity=".68"/>
+  {open && <>
+    <path d="m67 86 4-11 4 11 11 4-11 4-4 11-4-11-11-4 11-4Zm225 11 3-8 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" fill="#DDA4B7"/>
+    <circle cx="101" cy="105" r="4" fill="#E5B979"/><circle cx="275" cy="70" r="5" fill="#E5B979"/><circle cx="263" cy="119" r="3" fill="#D78DA5"/>
+    <path d="M139 102c-30-37-8-62 18-44 18 13 21 29 23 45 3-27 21-53 41-48 29 9 17 46-41 48" fill="#F5BED0" stroke="#B97892" strokeWidth="5"/>
+  </>}
+  <g filter="url(#gift-shadow)">
+    <path d="M80 132h202v107c0 9-7 16-16 16H96c-9 0-16-7-16-16V132Z" fill="url(#gift-front)" stroke="#A96C83" strokeWidth="4"/>
+    <path d="m282 132 17 9v98c0 8-6 13-17 16V132Z" fill="url(#gift-side)" stroke="#A96C83" strokeWidth="4"/>
+    <path d="M81 162h201" stroke="#D795AB" strokeWidth="3"/>
+    <path d="M156 132h47v123h-47V132Z" fill="url(#gift-ribbon)" stroke="#C39A8D" strokeWidth="3"/>
+    <path d="M165 135v116M195 135v116" stroke="#FFF9EC" strokeWidth="3" opacity=".7"/>
+    <path d="M91 140v88" stroke="#FFF7F8" strokeWidth="5" strokeLinecap="round" opacity=".65"/>
+    <path d="M182 193c-6-13-21-12-24-2-3 11 12 22 24 31 12-9 27-20 24-31-3-10-18-11-24 2Z" fill="#B97490" stroke="#A0627D" strokeWidth="2"/>
+    <path d="M180 200c-4-7-10-8-15-5" stroke="#EFC1D0" strokeWidth="3" strokeLinecap="round"/>
+    {open ? <g transform="rotate(-11 182 100)"><path d="M66 83h232l13 20v39H65v-39l1-20Z" fill="url(#gift-lid)" stroke="#A96C83" strokeWidth="4"/><path d="M66 104h245" stroke="#FFF9F7" strokeWidth="4" opacity=".7"/><path d="M159 83h45v59h-45V83Z" fill="url(#gift-ribbon)" stroke="#C39A8D" strokeWidth="3"/></g> : <>
+      <path d="M67 105h231c8 0 14 6 14 14v33c0 8-6 14-14 14H67c-8 0-14-6-14-14v-33c0-8 6-14 14-14Z" fill="url(#gift-lid)" stroke="#A96C83" strokeWidth="4"/>
+      <path d="M62 116h238M63 153h237" stroke="#FFF9F7" strokeWidth="3" opacity=".75"/>
+      <path d="M158 105h47v61h-47v-61Z" fill="url(#gift-ribbon)" stroke="#C39A8D" strokeWidth="3"/>
+      <path d="M181 105c-41-5-65-17-62-38 2-16 20-22 36-11 18 13 23 35 26 49Zm0 0c41-5 65-17 62-38-2-16-20-22-36-11-18 13-23 35-26 49Z" fill="url(#gift-front)" stroke="#AB6D86" strokeWidth="4"/>
+      <path d="M150 65c11 7 18 19 23 31m69-31c-11 7-18 19-23 31" stroke="#FFEAF0" strokeWidth="3" strokeLinecap="round"/>
+      <circle cx="181" cy="104" r="9" fill="#C77E9B" stroke="#A96C83" strokeWidth="3"/>
+    </>}
+  </g>
 </svg>;
-
-const motifs = ['♡', '✦', '♧', '♫', '✉', 'A+', '☼', '⌂', '☕', '◒'];
-export const QuestionIllustration: React.FC<{number: number}> = ({number}) => <div className="question-illustration" aria-hidden="true"><div className="question-halo"/><Petal className="question-petal petal-one"/><Petal className="question-petal petal-two"/><span className="motif">{motifs[number - 1]}</span><span className="question-illustration-number">{String(number).padStart(2, '0')}</span></div>;

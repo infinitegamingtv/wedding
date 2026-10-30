@@ -94,3 +94,6 @@ body{background:#f9ecef}
 .modal p{color:#876778}
 @container (max-width:700px){.gift-copy{padding:1.1cqw}.gift-copy h2{font-size:clamp(27px,3.2cqw,42px);margin:.5cqh 0}.gift-copy p{font-size:10px;line-height:1.35}.gift-ticket{padding:.7cqw;margin:1cqh 0;gap:.3cqh}.gift-ticket strong{font-size:clamp(16px,1.8cqw,25px)}.gift-copy .primary-button{min-height:28px;padding:.35cqh .9cqw;font-size:9px}}
 @media(max-width:900px) and (orientation:portrait){.welcome-art{width:min(360px,80vw)}.question-illustration{height:220px}.question-halo{width:170px}.motif{font-size:100px}.gift-petal-animation{width:80px;height:80px}.winner-row{grid-template-columns:30px 1fr 1.4fr}.finish-illustration{display:none}}
+.question-illustration svg{display:block;width:min(100%,48cqh);height:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 8px 14px #bb879a1c)}
+.question-illustration-number{right:9%;bottom:7%;box-shadow:0 4px 12px #b7859433}
+@media(max-width:900px) and (orientation:portrait){.question-illustration svg{width:min(100%,290px)}.question-illustration-number{right:12%;bottom:9%}}
