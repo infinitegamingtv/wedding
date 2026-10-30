@@ -1,9 +1,9 @@
 import React, {useRef} from 'react';
 import {Player} from '@remotion/player';
 import type {PlayerRef} from '@remotion/player';
-import {AbsoluteFill, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Img, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {Gift} from './data';
-import {CoupleIllustration, GiftIllustration, Petal} from './illustrations';
+import {GiftIllustration, Petal} from './illustrations';
 
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 
@@ -13,7 +13,7 @@ export const CoupleAnimation: React.FC = () => {
   const scale = spring({frame, fps, config: {damping: 18, stiffness: 90}});
   return <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center'}}>
     <div style={{position: 'absolute', inset: '8%', border: '2px solid #ebc2cd', borderRadius: '50%'}} />
-    <div style={{width: '96%', height: '96%', transform: `translateY(${Math.sin(frame / 18) * 5}px) scale(${0.94 + scale * 0.06})`}}><CoupleIllustration className="couple-svg"/></div>
+    <Img src="/assets/couple-square.jpg" alt="Ảnh chibi gốc của Quang Trưởng và Hồng Nhung" style={{width: '82%', height: '82%', objectFit: 'cover', borderRadius: '50%', border: '5px solid #fffaf9', boxShadow: '0 12px 35px #bc8b9a33', transform: `translateY(${Math.sin(frame / 18) * 5}px) scale(${0.94 + scale * 0.06})`}}/>
     <div style={{position: 'absolute', top: '12%', right: '6%', color: '#d4869e', fontSize: 32, transform: `rotate(${Math.sin(frame / 18) * 9}deg)`}}>♡</div>
   </AbsoluteFill>;
 };
