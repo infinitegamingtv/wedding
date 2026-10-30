@@ -24,9 +24,9 @@ export const GiftAnimation: React.FC<{gift: Gift; winner: string}> = ({gift, win
   return <AbsoluteFill style={{background: 'radial-gradient(circle at 50% 40%, #71334d 0%, #351c37 65%, #1b102b 100%)', overflow: 'hidden', alignItems: 'center', justifyContent: 'center', color: '#fff3dc'}}>
     {Array.from({length: 20}, (_, i) => <div key={i} style={{position: 'absolute', left: `${(i * 47) % 100}%`, top: `${(i * 31) % 100}%`, fontSize: 22 + i % 4 * 6, color: i % 3 ? '#dc8f9c' : '#e4b05d', rotate: `${frame * (i % 2 ? 1.8 : -1.4)}deg`, translate: `0px ${interpolate(frame, [0, 140], [-90 + i * 8, 200 + i * 11], clamp)}px`, opacity: interpolate(frame, [0, 20, 115, 145], [0, 1, 1, 0], clamp)}}>{i % 3 ? '✦' : '♥'}</div>)}
     <Sequence from={0} durationInFrames={65}>
-      <div style={{textAlign: 'center', zIndex: 2, padding: 30, width: '100%', opacity: interpolate(frame, [0, 12, 48, 62], [0, 1, 1, 0], clamp)}}>
+      <div style={{textAlign: 'center', zIndex: 2, padding: 30, width: '100%', opacity: interpolate(frame, [0, 48, 62], [1, 1, 0], clamp)}}>
         <div style={{fontSize: 18, fontWeight: 800, letterSpacing: 3, textTransform: 'uppercase'}}>Xin chúc mừng {winner}</div>
-        <Img src="/assets/gift-chest-closed.png" style={{width: 260, height: 230, objectFit: 'contain', margin: '3px auto -15px', scale: boxScale, filter: 'drop-shadow(0 18px 24px #6b23397a)'}} />
+        <Img src="/assets/gift-chest-closed.png" style={{width: 260, height: 230, objectFit: 'contain', margin: '3px auto -15px', scale: .7 + boxScale * .3, filter: 'drop-shadow(0 18px 24px #6b23397a)'}} />
         <div style={{fontSize: 23, fontWeight: 800, marginTop: 10}}>MÓN QUÀ BÍ ẨN...</div>
       </div>
     </Sequence>
@@ -51,6 +51,7 @@ export const CelebrationPlayer: React.FC<{gift: Gift; winner: string}> = ({gift,
   fps={30}
   autoPlay
   initiallyMuted
+  controls
   style={{width: '100%', aspectRatio: '8 / 5', borderRadius: 24, overflow: 'hidden'}}
 />;
 

@@ -79,10 +79,10 @@ function App() {
   const retry = () => {playSfx('click'); setGame(prev => ({...prev, phase: 'question', activeName: '', chosenLetters: []}));};
   const reset = () => {setGame(freshGame()); setResetOpen(false); setNameDraft('');};
 
-  return <div className="site-shell">
+  return <div className="site-shell" onPointerDownCapture={() => {if (soundOn && game.phase !== 'welcome') startMusic();}}>
     <header className="topbar">
       <div className="brand-mark"><span className="brand-heart">♥</span><span>MỞ QUÀ HỶ</span></div>
-      <div className="topbar-right"><span>QUANG TRƯỞNG <b>×</b> HỒNG NHUNG</span><button className="sound-button" aria-label={soundOn ? 'Tắt âm thanh' : 'Bật âm thanh'} aria-pressed={soundOn} onClick={() => {setSoundOn(!soundOn); setSoundEnabled(!soundOn);}}>♫ <small>{soundOn ? 'ÂM THANH BẬT' : 'ÂM THANH TẮT'}</small></button>{game.phase !== 'welcome' && <button className="text-button" onClick={() => setResetOpen(true)}>CHƠI LẠI ↺</button>}</div>
+      <div className="topbar-right"><span>QUANG TRƯỞNG <b>×</b> HỒNG NHUNG</span><button className="sound-button" aria-label={soundOn ? 'Tắt âm thanh' : 'Bật âm thanh'} aria-pressed={soundOn} onClick={() => {setSoundOn(!soundOn); setSoundEnabled(!soundOn);}}>♫ <small>{soundOn ? 'ÂM THANH BẬT' : 'ÂM THANH TẮT'}</small></button><button className="text-button fullscreen-button" onClick={() => {const stage = document.querySelector<HTMLElement>('.site-shell'); if (document.fullscreenElement) void document.exitFullscreen(); else void stage?.requestFullscreen().catch(() => {});}}>⛶ <small>TOÀN MÀN HÌNH</small></button>{game.phase !== 'welcome' && <button className="text-button" onClick={() => setResetOpen(true)}>CHƠI LẠI ↺</button>}</div>
     </header>
 
     {game.phase === 'welcome' && <main className="welcome layout-width">
