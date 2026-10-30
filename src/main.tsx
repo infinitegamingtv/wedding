@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {CelebrationPlayer, WelcomePlayer} from './animations';
 import {gifts, normalizeAnswer, questions} from './data';
+import {playSfx, setSoundEnabled, startMusic} from './audio';
 import './style.css';
 
 type Win = {questionId: number; player: string; giftId: number};
@@ -35,11 +36,12 @@ function App() {
   const [nameDraft, setNameDraft] = useState('');
   const [revealReady, setRevealReady] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
+  const [soundOn, setSoundOn] = useState(true);
   useEffect(() => {localStorage.setItem(storageKey, JSON.stringify(game));}, [game]);
   useEffect(() => {
     if (game.phase !== 'gift') return;
     setRevealReady(false);
-    const timer = window.setTimeout(() => setRevealReady(true), 2400);
+    const timer = window.setTimeout(() => {setRevealReady(true); playSfx('reveal');}, 2400);
     return () => window.clearTimeout(timer);
   }, [game.phase, game.index]);
 
@@ -50,6 +52,7 @@ function App() {
   const canPlay = Boolean(game.activeName.trim());
 
   const start = () => {
+    startMusic(); playSfx('click');
     setGame({phase: 'question', index: 0, giftOrder: shuffleGifts(), wins: [], activeName: '', chosenLetters: []});
     setNameDraft('');
   };
@@ -57,26 +60,29 @@ function App() {
     event.preventDefault();
     const name = nameDraft.trim().slice(0, 32);
     if (!name) return;
+    playSfx('click');
     setGame(prev => ({...prev, activeName: name, chosenLetters: []}));
     setNameDraft('');
   };
   const grade = (correct: boolean) => {
     if (!canPlay) return;
+    playSfx(correct ? 'correct' : 'wrong');
     if (!correct) {setGame(prev => ({...prev, phase: 'wrong', chosenLetters: []})); return;}
     setGame(prev => ({...prev, phase: 'gift', wins: [...prev.wins, {questionId: questions[prev.index].id, player: prev.activeName, giftId: prev.giftOrder[prev.wins.length]}]}));
   };
   const nextQuestion = () => {
+    playSfx('click');
     setGame(prev => prev.index >= questions.length - 1
       ? {...prev, phase: 'finish', index: questions.length, activeName: '', chosenLetters: []}
       : {...prev, phase: 'question', index: prev.index + 1, activeName: '', chosenLetters: []});
   };
-  const retry = () => setGame(prev => ({...prev, phase: 'question', activeName: '', chosenLetters: []}));
+  const retry = () => {playSfx('click'); setGame(prev => ({...prev, phase: 'question', activeName: '', chosenLetters: []}));};
   const reset = () => {setGame(freshGame()); setResetOpen(false); setNameDraft('');};
 
   return <div className="site-shell">
     <header className="topbar">
       <div className="brand-mark"><span className="brand-heart">♥</span><span>MỞ QUÀ HỶ</span></div>
-      <div className="topbar-right"><span>QUANG TRƯỞNG <b>×</b> HỒNG NHUNG</span>{game.phase !== 'welcome' && <button className="text-button" onClick={() => setResetOpen(true)}>Chơi lại từ đầu</button>}</div>
+      <div className="topbar-right"><span>QUANG TRƯỞNG <b>×</b> HỒNG NHUNG</span><button className="sound-button" aria-label={soundOn ? 'Tắt âm thanh' : 'Bật âm thanh'} aria-pressed={soundOn} onClick={() => {setSoundOn(!soundOn); setSoundEnabled(!soundOn);}}>♫ <small>{soundOn ? 'ÂM THANH BẬT' : 'ÂM THANH TẮT'}</small></button>{game.phase !== 'welcome' && <button className="text-button" onClick={() => setResetOpen(true)}>CHƠI LẠI ↺</button>}</div>
     </header>
 
     {game.phase === 'welcome' && <main className="welcome layout-width">
@@ -87,7 +93,7 @@ function App() {
         <div className="welcome-actions"><button className="primary-button" onClick={start}>Bắt đầu chơi <span>↗</span></button><span className="small-note">Dành cho khách chơi cá nhân · MC điều khiển trên một màn hình</span></div>
         <div className="game-facts"><div><strong>10</strong><span>câu hỏi</span></div><div><strong>10</strong><span>món quà</span></div><div><strong>∞</strong><span>tiếng cười</span></div></div>
       </div>
-      <div className="welcome-art"><div className="art-orbit" /><WelcomePlayer/><div className="art-label">QUANG TRƯỞNG <span>♥</span> HỒNG NHUNG</div><img className="art-sticker art-sticker-one" src="/assets/image5.png" alt="Hashtag Team Cô Dâu Xinh Gái" /><img className="art-sticker art-sticker-two" src="/assets/image6.png" alt="Hashtag Team Chú Rể Đẹp Trai" /></div>
+      <div className="welcome-art"><div className="art-orbit" /><WelcomePlayer/><div className="art-label">QUANG TRƯỞNG <span>♥</span> HỒNG NHUNG</div><img className="art-sticker art-sticker-one" src="/assets/image5.png" alt="Hashtag Team Cô Dâu Xinh Gái" /><img className="art-sticker art-sticker-two" src="/assets/image6.png" alt="Hashtag Team Chú Rể Đẹp Trai" /><img className="chest-sprite" src="/assets/gift-chest-closed.png" alt="Rương quà cưới bí ẩn" /></div>
     </main>}
 
     {(game.phase === 'question' || game.phase === 'wrong') && question && <main className="game-main layout-width">
@@ -102,13 +108,13 @@ function App() {
           {game.phase === 'question' && <div className={canPlay ? 'answers' : 'answers answers-disabled'}>
             {question.kind === 'choice' ? <div className="choice-list">{question.options?.map((option, index) => <button key={option} className="choice-button" disabled={!canPlay} onClick={() => grade(index === question.correct)}><span className="choice-letter">{'ABCD'[index]}</span><span>{option}</span><span className="choice-arrow">↗</span></button>)}</div> : <div className="letters-game">
               <div className="answer-slots" aria-label="Các chữ đã chọn">{game.chosenLetters.length ? game.chosenLetters.map((letterIndex, slotIndex) => <button key={`${letterIndex}-${slotIndex}`} onClick={() => setGame(prev => ({...prev, chosenLetters: prev.chosenLetters.filter((_, i) => i !== slotIndex)}))} aria-label={`Bỏ chữ ${question.letters?.[letterIndex]}`}>{question.letters?.[letterIndex]}</button>) : <span>Chạm các chữ bên dưới để ghép đáp án</span>}</div>
-              <div className="letter-bank">{question.letters?.map((letter, index) => <button key={index} disabled={!canPlay || game.chosenLetters.includes(index)} onClick={() => setGame(prev => ({...prev, chosenLetters: [...prev.chosenLetters, index]}))}>{letter}</button>)}</div>
+              <div className="letter-bank">{question.letters?.map((letter, index) => <button key={index} disabled={!canPlay || game.chosenLetters.includes(index)} onClick={() => {playSfx('tile'); setGame(prev => ({...prev, chosenLetters: [...prev.chosenLetters, index]}));}}>{letter}</button>)}</div>
               <div className="letter-actions"><button className="light-button" onClick={() => setGame(prev => ({...prev, chosenLetters: []}))} disabled={!game.chosenLetters.length}>Xóa chữ</button><button className="primary-button" disabled={!canPlay || game.chosenLetters.length !== question.letters?.length} onClick={() => grade(normalizeAnswer(answerText) === normalizeAnswer(question.answer || ''))}>Chốt đáp án <span>↗</span></button></div>
             </div>}
           </div>}
           {game.phase === 'wrong' && <div className="wrong-card"><span className="wrong-emoji">🙈</span><h3>Suýt nữa rồi!</h3><p>{game.activeName} chưa mở được quà ở câu này. Mời một vị khách khác thử sức nhé.</p><button className="primary-button" onClick={retry}>Mời người tiếp theo <span>↗</span></button></div>}
         </section>
-        <aside className="side-panel"><div className="side-heading"><span>CHUYỆN CỦA HAI ĐỨA</span><span>✦</span></div><img src={`/assets/${question.sticker}`} alt="Minh họa chibi từ bộ hashtag cưới"/><div className="side-footer">Trả lời đúng, quà bí ẩn sẽ tự chọn bạn! <span>♥</span></div></aside>
+        <aside className="side-panel"><div className="side-heading"><span>CHUYỆN CỦA HAI ĐỨA</span><span>✦</span></div><img className="question-sticker" src={`/assets/${question.sticker}`} alt="Minh họa chibi từ bộ hashtag cưới"/><img className="side-chest" src="/assets/gift-chest-closed.png" alt=""/><div className="side-footer">Trả lời đúng, quà bí ẩn sẽ tự chọn bạn! <span>♥</span></div></aside>
       </div>
     </main>}
 
