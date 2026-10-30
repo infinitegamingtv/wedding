@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {Player} from '@remotion/player';
+import type {PlayerRef} from '@remotion/player';
 import {AbsoluteFill, Img, interpolate, Sequence, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {Gift} from './data';
 
@@ -41,19 +42,29 @@ export const GiftAnimation: React.FC<{gift: Gift; winner: string}> = ({gift, win
   </AbsoluteFill>;
 };
 
-export const CelebrationPlayer: React.FC<{gift: Gift; winner: string}> = ({gift, winner}) => <Player
-  key={`${gift.id}-${winner}`}
-  component={GiftAnimation}
-  inputProps={{gift, winner}}
-  durationInFrames={150}
-  compositionWidth={800}
-  compositionHeight={500}
-  fps={30}
-  autoPlay
-  initiallyMuted
-  controls
-  style={{width: '100%', aspectRatio: '8 / 5', borderRadius: 24, overflow: 'hidden'}}
-/>;
+export const CelebrationPlayer: React.FC<{gift: Gift; winner: string}> = ({gift, winner}) => {
+  const player = useRef<PlayerRef>(null);
+  const replay = () => {
+    player.current?.seekTo(0);
+    player.current?.play();
+  };
+  return <div className="gift-player">
+    <Player
+      ref={player}
+      key={`${gift.id}-${winner}`}
+      component={GiftAnimation}
+      inputProps={{gift, winner}}
+      durationInFrames={150}
+      compositionWidth={800}
+      compositionHeight={500}
+      fps={30}
+      autoPlay
+      initiallyMuted
+      style={{width: '100%', aspectRatio: '8 / 5', borderRadius: 24, overflow: 'hidden'}}
+    />
+    <button className="replay-button" onClick={replay} aria-label="Mở rương hoặc xem lại hiệu ứng mở quà">▶ MỞ RƯƠNG / XEM LẠI</button>
+  </div>;
+};
 
 export const WelcomePlayer: React.FC = () => <Player
   component={CoupleAnimation}
