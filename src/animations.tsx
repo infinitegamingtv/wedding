@@ -57,7 +57,7 @@ export const CelebrationPlayer: React.FC<{gift: Gift; winner: string}> = ({gift,
   const player = useRef<PlayerRef>(null);
   const replay = () => {player.current?.seekTo(0); player.current?.play();};
   return <div className="gift-player">
-    <Player ref={player} key={`${gift.id}-${winner}`} component={GiftAnimation} inputProps={{gift, winner}} durationInFrames={150} compositionWidth={800} compositionHeight={500} fps={30} autoPlay initiallyMuted style={{width: '100%', aspectRatio: '8 / 5', borderRadius: 24, overflow: 'hidden'}}/>
+    <Player ref={player} key={`${gift.id}-${winner}`} component={GiftAnimation} inputProps={{gift, winner}} durationInFrames={150} compositionWidth={800} compositionHeight={500} fps={30} autoPlay initiallyMuted moveToBeginningWhenEnded={false} style={{width: '100%', aspectRatio: '8 / 5', borderRadius: 24, overflow: 'hidden'}}/>
     <button className="replay-button" onClick={replay} aria-label="Mở quà hoặc xem lại hiệu ứng">▶ MỞ QUÀ / XEM LẠI</button>
   </div>;
 };
