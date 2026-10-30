@@ -111,3 +111,4 @@ body{background:#130b1b;min-height:100vh;display:flex;align-items:center;justify
 .gift-player{position:relative;width:100%;height:100%}
 .replay-button{position:absolute;z-index:5;left:50%;bottom:4%;transform:translateX(-50%);white-space:nowrap;border:2px solid #ffdf9c;border-radius:100px;background:linear-gradient(180deg,#9c4c68,#63344e);color:#fff4d4;padding:.6cqh 1.1cqw;font-size:clamp(9px,.75cqw,15px);font-weight:900;letter-spacing:.07em;box-shadow:0 3px 0 #2b142a,0 8px 20px #1d0d25a8}
 .replay-button:hover{background:linear-gradient(180deg,#b85d77,#7d3f60)}
+@container (max-width:700px){.gift-copy{padding:1.1cqw}.gift-copy h2{font-size:clamp(27px,3.2cqw,42px);margin:.5cqh 0}.gift-copy p{font-size:10px;line-height:1.35}.gift-ticket{padding:.7cqw;margin:1cqh 0;gap:.3cqh}.gift-ticket strong{font-size:clamp(16px,1.8cqw,25px)}.gift-ticket small{font-size:9px}.gift-copy .primary-button{min-height:28px;padding:.35cqh .9cqw;font-size:9px}}
