@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {CelebrationPlayer, WelcomePlayer} from './animations';
+import {GiftIllustration, Petal, QuestionIllustration} from './illustrations';
 import {gifts, normalizeAnswer, questions} from './data';
 import {playSfx, setSoundEnabled, startMusic} from './audio';
 import './style.css';
+import './pastel.css';
 
 type Win = {questionId: number; player: string; giftId: number};
 type Game = {phase: 'welcome' | 'question' | 'wrong' | 'gift' | 'finish'; index: number; giftOrder: number[]; wins: Win[]; activeName: string; chosenLetters: number[]};
@@ -89,11 +91,11 @@ function App() {
       <div className="welcome-copy">
         <div className="eyebrow"><span className="eyebrow-line" /> MỘT CHÚT THỬ THÁCH, RẤT NHIỀU TIẾNG CƯỜI</div>
         <h1>Hiểu chúng mình,<br/><em>rinh quà bí ẩn!</em></h1>
-        <p>10 câu chuyện về Quang Trưởng và Hồng Nhung. Trả lời đúng để bốc một món quà ngẫu nhiên. Tên quà nghe thật oách, món quà thì… chờ mở nhé!</p>
+        <p>10 câu chuyện về Quang Trưởng và Hồng Nhung. Trả lời đúng để mở một món quà bí ẩn được chọn ngẫu nhiên.</p>
         <div className="welcome-actions"><button className="primary-button" onClick={start}>Bắt đầu chơi <span>↗</span></button><span className="small-note">Dành cho khách chơi cá nhân · MC điều khiển trên một màn hình</span></div>
         <div className="game-facts"><div><strong>10</strong><span>câu hỏi</span></div><div><strong>10</strong><span>món quà</span></div><div><strong>∞</strong><span>tiếng cười</span></div></div>
       </div>
-      <div className="welcome-art"><div className="art-orbit" /><WelcomePlayer/><div className="art-label">QUANG TRƯỞNG <span>♥</span> HỒNG NHUNG</div><img className="art-sticker art-sticker-one" src="/assets/image5.png" alt="Hashtag Team Cô Dâu Xinh Gái" /><img className="art-sticker art-sticker-two" src="/assets/image6.png" alt="Hashtag Team Chú Rể Đẹp Trai" /><img className="chest-sprite" src="/assets/gift-chest-closed.png" alt="Rương quà cưới bí ẩn" /></div>
+      <div className="welcome-art"><div className="art-orbit" /><WelcomePlayer/><div className="art-label">QUANG TRƯỞNG <span>♥</span> HỒNG NHUNG</div><Petal className="welcome-petal welcome-petal-one"/><Petal className="welcome-petal welcome-petal-two"/></div>
     </main>}
 
     {(game.phase === 'question' || game.phase === 'wrong') && question && <main className="game-main layout-width">
@@ -114,16 +116,16 @@ function App() {
           </div>}
           {game.phase === 'wrong' && <div className="wrong-card"><span className="wrong-emoji">🙈</span><h3>Suýt nữa rồi!</h3><p>{game.activeName} chưa mở được quà ở câu này. Mời một vị khách khác thử sức nhé.</p><button className="primary-button" onClick={retry}>Mời người tiếp theo <span>↗</span></button></div>}
         </section>
-        <aside className="side-panel"><div className="side-heading"><span>CHUYỆN CỦA HAI ĐỨA</span><span>✦</span></div><img className="question-sticker" src={`/assets/${question.sticker}`} alt="Minh họa chibi từ bộ hashtag cưới"/><img className="side-chest" src="/assets/gift-chest-closed.png" alt=""/><div className="side-footer">Trả lời đúng, quà bí ẩn sẽ tự chọn bạn! <span>♥</span></div></aside>
+        <aside className="side-panel"><div className="side-heading"><span>CHUYỆN CỦA HAI ĐỨA</span><span>✦</span></div><QuestionIllustration number={question.id}/><div className="side-footer">Trả lời đúng, quà bí ẩn sẽ tự chọn bạn! <span>♥</span></div></aside>
       </div>
     </main>}
 
-    {game.phase === 'gift' && gift && lastWin && <main className="gift-main layout-width"><div className="gift-topline">CÂU {lastWin.questionId} / 10 <span>✦</span> MỞ QUÀ BÍ ẨN</div><div className="gift-layout"><div className="gift-animation"><CelebrationPlayer gift={gift} winner={lastWin.player}/></div><div className="gift-copy"><div className="section-kicker">CHÚC MỪNG {lastWin.player.toLocaleUpperCase('vi-VN')}</div><h2>Đúng rồi!<br/><em>Quà đến tay.</em></h2><p>Một câu trả lời chuẩn xác, một món quà được bốc hoàn toàn ngẫu nhiên.</p>{revealReady ? <div className="gift-ticket"><span>PHIẾU NHẬN QUÀ #{String(gift.id).padStart(2, '0')}</span><strong>{gift.title}</strong><small>Quà thật: {gift.item}</small></div> : <div className="gift-ticket pending"><span>ĐANG MỞ QUÀ...</span><strong>Hồi hộp một chút nhé!</strong></div>}<button className="primary-button" disabled={!revealReady} onClick={nextQuestion}>{game.index === 9 ? 'Xem tổng kết' : 'Câu hỏi tiếp theo'} <span>↗</span></button></div></div></main>}
+    {game.phase === 'gift' && gift && lastWin && <main className="gift-main layout-width"><div className="gift-topline">CÂU {lastWin.questionId} / 10 <span>✦</span> MỞ QUÀ BÍ ẨN</div><div className="gift-layout"><div className="gift-animation"><CelebrationPlayer gift={gift} winner={lastWin.player}/></div><div className="gift-copy"><div className="section-kicker">CHÚC MỪNG {lastWin.player.toLocaleUpperCase('vi-VN')}</div><h2>Đúng rồi!<br/><em>Quà đến tay.</em></h2><p>Một câu trả lời chuẩn xác, một món quà được bốc hoàn toàn ngẫu nhiên.</p>{revealReady ? <div className="gift-ticket"><span>PHIẾU NHẬN QUÀ #{String(gift.id).padStart(2, '0')}</span><strong>{gift.title}</strong></div> : <div className="gift-ticket pending"><span>ĐANG MỞ QUÀ...</span><strong>Hồi hộp một chút nhé!</strong></div>}<button className="primary-button" disabled={!revealReady} onClick={nextQuestion}>{game.index === 9 ? 'Xem tổng kết' : 'Câu hỏi tiếp theo'} <span>↗</span></button></div></div></main>}
 
-    {game.phase === 'finish' && <main className="finish-main layout-width"><div className="finish-head"><div className="section-kicker">KHÉP LẠI MỘT TRÒ CHƠI, MỞ RA THẬT NHIỀU NIỀM VUI</div><h1>Cảm ơn vì đã<br/><em>chơi cùng chúng mình!</em></h1><p>10 món quà đã tìm được chủ nhân. Chúc mọi người một buổi tiệc thật vui cùng Quang Trưởng và Hồng Nhung.</p></div><div className="winner-list">{game.wins.map(win => {const item = gifts.find(g => g.id === win.giftId); return <div className="winner-row" key={win.questionId}><span className="winner-number">{String(win.questionId).padStart(2, '0')}</span><strong>{win.player}</strong><span>{item?.title}</span><b>{item?.item}</b></div>;})}</div><button className="light-button finish-restart" onClick={() => setResetOpen(true)}>Chơi một lượt mới ↗</button><img className="finish-sticker" src="/assets/image14.png" alt="Thêm vợ vào cuộc chơi" /></main>}
+    {game.phase === 'finish' && <main className="finish-main layout-width"><div className="finish-head"><div className="section-kicker">CẢM ƠN BẠN ĐÃ CHƠI CÙNG CHÚNG MÌNH</div><h1>Một ngày thật vui,<br/><em>thật nhiều kỷ niệm!</em></h1><p>10 món quà đã tìm được chủ nhân. Chúc mọi người một buổi tiệc thật vui cùng Quang Trưởng và Hồng Nhung.</p></div><div className="winner-list">{game.wins.map(win => {const item = gifts.find(g => g.id === win.giftId); return <div className="winner-row" key={win.questionId}><span className="winner-number">{String(win.questionId).padStart(2, '0')}</span><strong>{win.player}</strong><span>{item?.title}</span></div>;})}</div><button className="light-button finish-restart" onClick={() => setResetOpen(true)}>Chơi một lượt mới ↗</button><div className="finish-illustration"><GiftIllustration open/></div></main>}
 
     {resetOpen && <div className="modal-backdrop" role="presentation" onMouseDown={() => setResetOpen(false)}><div className="modal" role="dialog" aria-modal="true" aria-labelledby="reset-title" onMouseDown={event => event.stopPropagation()}><span className="modal-icon">🎁</span><h2 id="reset-title">Chơi lại từ đầu?</h2><p>Danh sách khách đã thắng và thứ tự quà hiện tại sẽ được xóa trên thiết bị này.</p><div><button className="light-button" onClick={() => setResetOpen(false)}>Giữ lượt chơi</button><button className="primary-button" onClick={reset}>Bắt đầu lại</button></div></div></div>}
-    <footer className="footer"><span>MADE WITH ♥ FOR QUANG TRƯỞNG & HỒNG NHUNG</span><span>Quà thật do MC trao tại tiệc</span></footer>
+    <footer className="footer"><span>MADE WITH ♥ FOR QUANG TRƯỞNG & HỒNG NHUNG</span><span>HẸN GẶP NHAU TẠI BỮA TIỆC</span></footer>
   </div>;
 }
 

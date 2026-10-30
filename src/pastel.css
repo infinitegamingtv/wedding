@@ -1,0 +1,96 @@
+:root{color:#633e4e;background:#f9ecef}
+body{background:#f9ecef}
+.site-shell{background:radial-gradient(circle at 92% 10%,#fffaf7 0 12%,transparent 27%),radial-gradient(circle at 2% 95%,#f4dce3 0 12%,transparent 34%),#faedf0;box-shadow:0 0 0 1px #e5b9c6,0 16px 48px #ad7c8b34}
+.site-shell::before{background:none}
+.topbar{background:#fff9f8;border-bottom:1px solid #ebcbd3;box-shadow:none}
+.brand-mark{color:#9d5871;text-shadow:none;letter-spacing:.07em}
+.brand-heart{background:#e8adc0;border:0;box-shadow:none;color:#fff}
+.topbar-right{color:#996c79}
+.topbar-right b{color:#c68298}
+.text-button,.sound-button{background:#fff6f7;border:1px solid #e7beca;color:#92586d;border-radius:100px;box-shadow:none;text-decoration:none}
+.text-button:hover,.sound-button:hover{background:#f9e5eb}
+.footer{background:#fff9f8;border-top:1px solid #ebcbd3;color:#a47485}
+.welcome{gap:2%}
+.welcome-copy{background:#fffaf9;border:1px solid #efd6dd;box-shadow:0 10px 30px #ba859626;text-align:left}
+.eyebrow,.section-kicker{color:#b8708b}
+.eyebrow-line{background:#ca8fa1}
+.welcome h1,.finish-head h1{color:#7b4b60;text-shadow:none}
+.welcome h1 em,.gift-copy h2 em,.finish-head h1 em{color:#c67491}
+.welcome-copy p,.gift-copy p,.finish-head p{color:#846574}
+.primary-button{background:#ce829d;border:1px solid #ce829d;color:#fff;text-shadow:none;box-shadow:0 4px 10px #b9788c33;border-radius:100px}
+.primary-button:not(:disabled):hover{background:#bd6e8b;box-shadow:0 5px 12px #b9788c44;translate:0 -1px}
+.small-note{color:#a98290}
+.game-facts{border-top:1px solid #eed9df;padding-top:2cqh}
+.game-facts strong{color:#bd708d;text-shadow:none}
+.game-facts span{color:#9c7785}
+.welcome-art{width:min(100%,62cqh)}
+.welcome-art>div:nth-child(2){background:transparent}
+.art-orbit{border:1px dashed #ddb0bf;box-shadow:none}
+.art-label{background:#fffaf9;border:1px solid #eac8d2;color:#89566b;box-shadow:0 5px 18px #be8a9b26}
+.art-label span{color:#c97996}
+.welcome-petal{position:absolute;z-index:3;width:19%;height:auto}
+.welcome-petal-one{top:9%;left:-5%;transform:rotate(-25deg)}
+.welcome-petal-two{right:-5%;bottom:15%;transform:rotate(35deg) scale(.76)}
+.couple-svg{width:100%;height:100%}
+.round-label,.gift-counter{color:#946e7d;text-shadow:none}
+.round-label b{color:#b96785}
+.progress-track{background:#f1dce3;border:0;box-shadow:none}
+.progress-track div{background:#d08aa3;box-shadow:none}
+.question-panel,.side-panel{background:#fffaf9;border:1px solid #e9cbd4;box-shadow:0 10px 24px #b7859424;color:#70495b}
+.question-panel{scrollbar-color:#e9b8c8 #fff7f8}
+.question-panel h2{color:#6f4659;text-shadow:none}
+.fiction-note{color:#aa7888}
+.player-entry{background:#fcf0f3;border:1px solid #ebc9d3}
+.player-entry label{color:#855568}
+.player-entry input{background:#fff;border:1px solid #e5bcc9;color:#623e50}
+.player-entry input::placeholder{color:#aa8b97}
+.active-player{color:#946b7c}
+.active-player strong,.active-player button{color:#b66081}
+.choice-button{background:#fff;border:1px solid #e9cbd4;border-bottom:1px solid #e9cbd4;box-shadow:none;color:#6e485a}
+.choice-button:not(:disabled):hover{background:#fceef2;border-color:#d493aa}
+.choice-letter{background:#f4dce5;border:1px solid #edc7d3;box-shadow:none;color:#a85c7a}
+.choice-arrow{color:#c891a4}
+.side-panel{background:#fff8f7;box-shadow:0 10px 24px #b7859424}
+.side-heading,.side-footer{color:#a07283;text-shadow:none}
+.side-heading span:last-child,.side-footer span{color:#cc8ba3}
+.side-footer{border-top:1px solid #ecd3da}
+.question-illustration{position:relative;display:grid;place-items:center;width:100%;height:66%;min-height:0}
+.question-halo{position:absolute;width:min(68%,30cqh);aspect-ratio:1;border-radius:50%;background:#fcebef;border:1px solid #efd1da}
+.question-petal{position:absolute;width:22%;max-height:25%}
+.petal-one{left:6%;top:11%;transform:rotate(-20deg)}
+.petal-two{right:6%;bottom:5%;transform:rotate(29deg) scale(.78)}
+.motif{position:relative;z-index:2;font-family:Georgia,serif;color:#bb7892;font-size:clamp(60px,8cqw,150px);line-height:1}
+.question-illustration-number{position:absolute;z-index:2;right:21%;bottom:15%;display:grid;place-items:center;width:clamp(28px,3cqw,58px);aspect-ratio:1;border-radius:50%;background:#fff;color:#ad6b84;border:1px solid #ebc7d2;font-size:clamp(10px,1cqw,18px);font-weight:900}
+.answer-slots{background:#fff4f6;border:1px dashed #d99aaf;color:#a37d8c}
+.answer-slots button{background:#d58fa8;border:1px solid #bd7893;color:#fff}
+.letter-bank button{background:#fff;border:1px solid #dba6b8;box-shadow:0 3px 0 #efd0d9;color:#8e5770}
+.light-button{background:#fff;border:1px solid #ddaabc;color:#a7607c;box-shadow:none;border-radius:100px}
+.light-button:hover:not(:disabled){background:#fceef2}
+.wrong-card{background:#fff2f4;border:1px solid #eac4d0;color:#70495b}
+.wrong-card h3{color:#ad6380}
+.wrong-card p{color:#876778}
+.gift-topline{color:#9e6a7d}
+.gift-topline span{color:#ca8ea3}
+.gift-animation{border:1px solid #e8c4cf;background:#fff8f7;box-shadow:0 10px 28px #bd8f9d26}
+.gift-copy{background:#fffaf9;border:1px solid #e8c8d1;box-shadow:0 10px 28px #bd8f9d26}
+.gift-copy h2{color:#76495d}
+.gift-ticket{background:#fdf0f3;border:1px dashed #d79bac}
+.gift-ticket span{color:#a5677f}
+.gift-ticket strong{color:#9e5874}
+.replay-button{background:#fff;border:1px solid #dca8b9;color:#9a5a73;box-shadow:0 4px 14px #bb879933}
+.replay-button:hover{background:#fceaf0}
+.gift-petal-animation{position:absolute;left:4%;bottom:3%;width:130px;height:130px;opacity:.65}
+.finish-head{background:#fffaf9;border:1px solid #e8c8d1}
+.finish-head p{color:#886a79}
+.winner-list{background:#fffaf9;border:1px solid #e8c8d1;color:#754c60;box-shadow:0 10px 25px #b9899820}
+.winner-row{grid-template-columns:3cqw 1fr 1.6fr;border-color:#f0dce2;color:#9a6e80}
+.winner-number{color:#ba7790}
+.winner-row strong{color:#76495e}
+.finish-illustration{position:absolute;width:13%;right:1%;bottom:-2%;opacity:.68;transform:rotate(10deg)}
+.finish-illustration svg{width:100%;height:auto}
+.modal-backdrop{background:#633d4b77}
+.modal{background:#fffaf9;border:1px solid #e4b7c5;color:#70495b;box-shadow:0 20px 60px #7b4e5b50}
+.modal h2{color:#8d526c}
+.modal p{color:#876778}
+@container (max-width:700px){.gift-copy{padding:1.1cqw}.gift-copy h2{font-size:clamp(27px,3.2cqw,42px);margin:.5cqh 0}.gift-copy p{font-size:10px;line-height:1.35}.gift-ticket{padding:.7cqw;margin:1cqh 0;gap:.3cqh}.gift-ticket strong{font-size:clamp(16px,1.8cqw,25px)}.gift-copy .primary-button{min-height:28px;padding:.35cqh .9cqw;font-size:9px}}
+@media(max-width:900px) and (orientation:portrait){.welcome-art{width:min(360px,80vw)}.question-illustration{height:220px}.question-halo{width:170px}.motif{font-size:100px}.gift-petal-animation{width:80px;height:80px}.winner-row{grid-template-columns:30px 1fr 1.4fr}.finish-illustration{display:none}}
