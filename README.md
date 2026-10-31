@@ -13,6 +13,12 @@ npm run dev
 
 Mở địa chỉ do Vite hiển thị, thường là `http://localhost:5173/`. Để kiểm tra bản phát hành: `npm run build` rồi `npm run preview`.
 
+## Trước khi chiếu
+
+Mở **Kiểm tra trước tiệc** ở màn đầu hoặc trong **MC ⚙**. Đợi trạng thái **Chơi khi mất mạng** báo đủ tệp, thử loa, bật toàn màn hình và tải bản sao lượt chơi. Sau lần tải đầu thành công, trình duyệt có thể mở lại game khi mất mạng trên chính thiết bị đó. Mỗi lần cập nhật web, hãy mở trang khi có mạng để tải bản mới trước khi ngắt mạng.
+
+Phím tắt cho MC: `H` mở điều khiển, `M` bật/tắt âm thanh, `F` bật/tắt toàn màn hình, `Space` tạm dừng/tiếp tục vòng quay và `→` sang câu tiếp theo sau khi đã mở quà. Phím tắt không hoạt động khi hộp thoại đang mở.
+
 ## Tự đưa lên GitHub Pages
 
 Repo đã có workflow `.github/workflows/deploy-pages.yml`. Sau khi mã nguồn được đẩy lên GitHub:

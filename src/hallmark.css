@@ -51,7 +51,9 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:3px;transitio
 .welcome h1 em,.finish-head h1 em{font-style:normal;color:inherit}
 .welcome h1{max-width:none;font-size:clamp(30px,3.15cqw,58px);line-height:1.22}
 .welcome-copy p{margin:0;color:var(--muted);font-size:clamp(12px,1.2cqw,21px);line-height:1.6}
-.welcome-actions{margin-top:clamp(20px,3cqh,32px)}
+.welcome-actions{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:clamp(20px,3cqh,32px)}
+.welcome-check-button{min-height:clamp(40px,5.5cqh,60px);padding:8px 18px;border:2px solid var(--line);border-radius:14px;background:var(--white);color:var(--rose-dark);font-size:clamp(11px,.9cqw,17px);font-weight:800}
+.welcome-check-button:hover{background:var(--paper-soft)}
 .primary-button,.answer-reveal-button{min-height:clamp(40px,5.5cqh,60px);padding:8px clamp(16px,1.6cqw,32px);border:2px solid var(--rose-deep);border-radius:14px;background:var(--rose-deep);color:var(--white);font-size:clamp(11px,1cqw,19px);font-weight:800;box-shadow:0 5px 0 var(--rose-dark);transition:transform .17s,background .17s}
 .primary-button:hover:not(:disabled),.answer-reveal-button:hover:not(:disabled){background:var(--rose-dark);transform:translateY(-2px)}
 .primary-button:active:not(:disabled),.answer-reveal-button:active:not(:disabled){transform:translateY(3px);box-shadow:0 2px 0 var(--rose-dark)}
@@ -165,6 +167,18 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:3px;transitio
 .host-divider{height:1px;margin:20px 0!important;background:var(--line)}
 .host-file-input{display:none}
 .host-error{padding:10px;border-radius:8px;background:#fff0ed;color:#a13737!important}
+.preflight-modal{width:min(720px,94vw);max-height:88vh;overflow:auto;text-align:left}
+.modal>.preflight-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.preflight-head h2{font-size:clamp(24px,2.3cqw,36px)}
+.modal>.preflight-list{display:grid;gap:10px;margin:18px 0}
+.preflight-row{display:grid;grid-template-columns:14px minmax(0,1fr) auto;align-items:center;gap:14px;padding:12px;border:2px solid var(--line);border-radius:14px;background:var(--white)}
+.preflight-row strong,.preflight-row small{display:block}
+.preflight-row strong{color:var(--rose-dark);font-size:clamp(13px,.95cqw,17px)}
+.preflight-row small{margin-top:3px;color:var(--muted);font-size:clamp(11px,.8cqw,14px)}
+.preflight-row .light-button{min-height:38px;padding:6px 12px;font-size:clamp(11px,.75cqw,14px);white-space:nowrap}
+.preflight-dot{width:14px;height:14px;border-radius:50%;background:var(--glint);box-shadow:inset 0 0 0 3px var(--rose)}
+.preflight-dot.is-ready{background:#76b78b;box-shadow:inset 0 0 0 3px #3b8355}
+.preflight-tip{margin:10px 0 0!important;font-size:13px;line-height:1.55}
 .modal-backdrop{position:fixed!important;inset:0;z-index:20!important;display:grid;place-items:center;padding:20px;background:var(--shade-deep)}
 .modal{width:min(450px,100%);padding:28px;border:4px solid var(--white);border-radius:20px;background:var(--paper);color:var(--ink);text-align:center;box-shadow:8px 9px 0 var(--rose-dark)}
 .modal-icon{font-size:36px}
@@ -207,4 +221,5 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:3px;transitio
 @media(max-width:620px){.choice-list{grid-template-columns:1fr}.choice-button{min-height:58px}.topbar-right{gap:4px}.text-button,.sound-button{padding:4px 8px}.brand-mark{gap:8px}.brand-heart{width:28px}}
 @media(max-width:900px) and (orientation:landscape){.topbar-right>span,.reset-button{display:none}.winner-row{grid-template-columns:26px 1fr 1.3fr 90px}.winner-list{width:95%}.finish-actions .light-button{min-height:36px;padding:6px 10px}}
 @media(max-width:620px){.winner-row{grid-template-columns:24px 1fr 1.2fr 82px}.summary-status{padding:5px;font-size:10px}.finish-actions{flex-wrap:wrap}}
+@media(max-width:620px){.preflight-row{grid-template-columns:12px minmax(0,1fr);gap:8px}.preflight-row .light-button{grid-column:2;justify-self:start}.welcome-actions{justify-content:center}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

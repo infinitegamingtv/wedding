@@ -2,16 +2,17 @@
 
 ## Trước buổi tiệc
 
-1. Mở `http://127.0.0.1:5173/` trên máy nối màn chiếu, bật **Toàn màn hình**.
+1. Mở web trên máy nối màn chiếu, chọn **Kiểm tra trước tiệc** và đợi đủ tài nguyên offline, rồi bật **Toàn màn hình**.
 2. Thử loa bằng nút **Âm thanh bật/tắt**; thử một vòng quay và video ở giải **Chắc chắn là chấm hết**.
 3. Mở **MC ⚙ → Lưu lượt chơi ↓** để có bản sao JSON trước khi bắt đầu và sau vài câu.
-4. Có thể ngắt Internet để thử: trang dùng asset cục bộ và phông Be Vietnam Pro đã cài trên máy này. Vẫn cần giữ máy chủ localhost đang chạy.
+4. Nếu dùng GitHub Pages, mở web khi có mạng và đợi kiểm tra offline báo đủ tệp. Sau đó thử ngắt Internet rồi tải lại trang. Nếu dùng localhost, vẫn cần giữ máy chủ localhost đang chạy.
 
 ## Khi chơi
 
 - Trả lời sai: mời khách khác thử lại cùng câu.
 - Khi quà xuất hiện: bấm **Đánh dấu đã trao quà** sau khi trao hiện vật. Có thể đánh dấu muộn ở màn tổng kết.
 - Trong **MC ⚙**: tạm dừng/tiếp tục hoặc quay lại vòng quay; bỏ qua câu cần xác nhận lần hai.
+- Phím MC: `H` mở điều khiển, `M` âm thanh, `F` toàn màn hình, `Space` tạm dừng/tiếp tục quay, `→` sang câu tiếp khi quà đã mở.
 - **Khôi phục lượt chơi ↑** đọc bản sao JSON đã lưu. Tệp không hợp lệ bị từ chối; trang không thay đổi lượt đang chơi.
 - **Xuất danh sách CSV ↓** chứa quà đã trao, chờ trao và chưa mở.
 
