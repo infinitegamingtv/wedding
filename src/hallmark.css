@@ -125,6 +125,7 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:3px;transitio
 .gift-copy{min-width:0;max-height:100%;overflow-y:auto;padding:clamp(20px,2.4cqw,44px);border:4px solid var(--white);border-radius:22px;background:var(--paper);box-shadow:5px 6px 0 var(--paper-deep);text-align:left}
 .section-kicker{color:var(--rose-deep);font-size:clamp(11px,.9cqw,17px);font-weight:800}
 .gift-copy h2{margin:1.5cqh 0 2cqh;color:var(--rose-dark);font-size:clamp(30px,3.5cqw,65px);line-height:1.15;letter-spacing:-.045em;overflow-wrap:break-word;min-width:0}
+.gift-copy h2.gift-title-compact{font-size:clamp(22px,2.5cqw,46px);white-space:nowrap;overflow-wrap:normal}
 .gift-award-number,.gift-ticket{margin:0 0 3cqh;padding:clamp(8px,1cqw,16px);border:2px dashed var(--line);border-radius:13px;background:var(--paper-soft);color:var(--rose-dark);font-size:clamp(11px,.95cqw,17px);font-weight:800}
 .gift-award-number span{color:var(--rose-deep)}
 .gift-ticket{display:flex;justify-content:space-between;align-items:center;gap:12px}
