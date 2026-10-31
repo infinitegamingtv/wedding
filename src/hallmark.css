@@ -1,3 +1,4 @@
+@import './fonts.css';
 /* Hallmark · redesign: full · scope: app · genre: playful · theme: Sticker adapted to the couple's pale-pink palette · v2.0.0
  * critique: stacked gradients and repeated overrides cramped the quiz, weakened contrast, and hid the illustration at small widths.
  * keeps: four game states, every handler, the chibi portrait, question art, Remotion gift wheel, and stage lights. */
