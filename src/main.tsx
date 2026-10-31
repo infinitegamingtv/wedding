@@ -5,8 +5,6 @@ import {QuestionIllustration} from './question-art';
 import {StageDecor} from './stage-decor';
 import {SpecialPrizeMusic} from './special-prize-music';
 import {assetUrl} from './asset-url';
-import {checkOffline, initialOfflineStatus, registerOffline} from './offline';
-import type {OfflineStatus} from './offline';
 import {gifts, normalizeAnswer, orderedLetterIndices, questions} from './data';
 import {playSfx, setSoundEnabled, startMusic} from './audio';
 import {freshGame, makeBackup, parseBackup, restoreGame, storageKey} from './game-state';
@@ -35,11 +33,6 @@ function App() {
   const [revealReady, setRevealReady] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
   const [hostOpen, setHostOpen] = useState(false);
-  const [preflightOpen, setPreflightOpen] = useState(false);
-  const [offlineStatus, setOfflineStatus] = useState<OfflineStatus>(initialOfflineStatus);
-  const [storageOk, setStorageOk] = useState(false);
-  const [soundTested, setSoundTested] = useState(false);
-  const [fullscreenOn, setFullscreenOn] = useState(Boolean(document.fullscreenElement));
   const [giftPaused, setGiftPaused] = useState(false);
   const [giftReplayVersion, setGiftReplayVersion] = useState(0);
   const [skipArmed, setSkipArmed] = useState(false);
@@ -51,11 +44,13 @@ function App() {
   const resetOpenerRef = useRef<HTMLElement | null>(null);
   const importRef = useRef<HTMLInputElement>(null);
   useEffect(() => {try {localStorage.setItem(storageKey, JSON.stringify(game));} catch {/* Manual backup remains available. */}}, [game]);
-  useEffect(() => {void registerOffline().catch(() => {});}, []);
   useEffect(() => {
-    const update = () => setFullscreenOn(Boolean(document.fullscreenElement));
-    document.addEventListener('fullscreenchange', update);
-    return () => document.removeEventListener('fullscreenchange', update);
+    if ('serviceWorker' in navigator) {
+      void navigator.serviceWorker.getRegistration(import.meta.env.BASE_URL).then(registration => registration?.unregister()).catch(() => {});
+    }
+    if ('caches' in window) {
+      void caches.keys().then(names => Promise.all(names.filter(name => name.startsWith('mo-qua-hy-')).map(name => caches.delete(name)))).catch(() => {});
+    }
   }, []);
   useEffect(() => {
     if (game.phase !== 'question' && game.phase !== 'wrong') return;
@@ -108,6 +103,7 @@ function App() {
   const letterArtRevealed = question?.kind === 'letters' && game.revealedLetterQuestionId === question.id;
   const lastWin = game.wins.at(-1);
   const gift = lastWin ? gifts.find(item => item.id === lastWin.giftId) : undefined;
+  const giftDelivered = lastWin ? game.deliveredQuestionIds.includes(lastWin.questionId) : false;
   const answerText = question?.kind === 'letters' ? game.chosenLetters.map(i => question.letters?.[i] || '').join('') : '';
 
   const start = () => {
@@ -183,37 +179,9 @@ function App() {
     if (document.fullscreenElement) void document.exitFullscreen();
     else void document.querySelector<HTMLElement>('.site-shell')?.requestFullscreen().catch(() => {});
   };
-  const openPreflight = () => {
-    setHostOpen(false);
-    setPreflightOpen(true);
-    setOfflineStatus(initialOfflineStatus);
-    try {
-      const key = 'mo-qua-hy-storage-check';
-      localStorage.setItem(key, 'ok');
-      setStorageOk(localStorage.getItem(key) === 'ok');
-      localStorage.removeItem(key);
-    } catch {setStorageOk(false);}
-    void registerOffline().catch(() => {}).then(() => checkOffline()).then(setOfflineStatus);
-  };
-  useEffect(() => {
-    if (!preflightOpen) return;
-    document.querySelector<HTMLButtonElement>('.preflight-close')?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {event.preventDefault(); setPreflightOpen(false); return;}
-      if (event.key !== 'Tab') return;
-      const dialog = document.querySelector<HTMLElement>('.preflight-modal');
-      const controls = Array.from(dialog?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') ?? []);
-      if (!controls.length) return;
-      const first = controls[0], last = controls[controls.length - 1];
-      if (event.shiftKey && document.activeElement === first) {event.preventDefault(); last.focus();}
-      else if (!event.shiftKey && document.activeElement === last) {event.preventDefault(); first.focus();}
-    };
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
-  }, [preflightOpen]);
   useEffect(() => {
     const onShortcut = (event: KeyboardEvent) => {
-      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.repeat || hostOpen || resetOpen || preflightOpen) return;
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.repeat || hostOpen || resetOpen) return;
       if ((event.target as HTMLElement)?.closest('input, textarea, select, video, [role="slider"], [contenteditable="true"]')) return;
       const key = event.key.toLowerCase();
       if (key === 'h') {event.preventDefault(); setImportError(''); setSkipArmed(false); setHostOpen(true); return;}
@@ -224,7 +192,7 @@ function App() {
     };
     document.addEventListener('keydown', onShortcut);
     return () => document.removeEventListener('keydown', onShortcut);
-  }, [game.phase, revealReady, hostOpen, resetOpen, preflightOpen]);
+  }, [game.phase, revealReady, hostOpen, resetOpen]);
 
   return <div className="site-shell" onPointerDownCapture={() => {if (soundOn && game.phase !== 'welcome') startMusic();}}>
     <StageDecor active={game.phase !== 'welcome'} celebrate={game.phase === 'gift'} award={game.phase === 'gift' && revealReady}/>
@@ -238,13 +206,13 @@ function App() {
         <h1>Hiểu Nhung và Trưởng,<br/><em>chắc chắn được thưởng</em></h1>
         <p className="eyebrow">Trò chơi tiệc cưới</p>
         <p>10 câu hỏi, 10 món quà bí ẩn</p>
-        <div className="welcome-actions"><button className="primary-button" onClick={start}>Bắt đầu chơi <span>↗</span></button><button className="welcome-check-button" onClick={openPreflight}>Kiểm tra trước tiệc</button></div>
+        <div className="welcome-actions"><button className="primary-button" onClick={start}>Bắt đầu chơi <span>↗</span></button></div>
       </div>
       <div className="welcome-art"><div className="art-orbit" /><div className="welcome-couple"><img src={assetUrl('assets/couple-square-groom-left.webp')} alt="Ảnh chibi của Quang Trưởng bên trái và Hồng Nhung bên phải" decoding="async"/><span aria-hidden="true">♡</span></div><div className="art-label">Quang Trưởng <span><Heart/></span> Hồng Nhung</div><Petal className="welcome-petal welcome-petal-one"/><Petal className="welcome-petal welcome-petal-two"/></div>
     </main>}
 
     {(game.phase === 'question' || game.phase === 'wrong') && question && <main className="game-main layout-width">
-      <div className="progress-row"><span className="round-label">Câu hỏi <b>{String(question.id).padStart(2, '0')}</b> / 10</span><div className="progress-track"><div style={{transform: `scaleX(${question.id / 10})`}} /></div><span className="gift-counter">{10 - game.wins.length} quà đang chờ</span></div>
+      <div className="progress-row"><span className="round-label">Câu hỏi <b>{String(question.id).padStart(2, '0')}</b> / 10</span><div className="progress-track"><div style={{transform: `scaleX(${question.id / 10})`}} /></div><span className="gift-counter">{question.kind === 'letters' ? 'Xếp chữ' : 'Trắc nghiệm'}</span></div>
       <div className={`question-grid ${question.kind === 'choice' ? 'choice-round' : ''} ${question.kind === 'letters' && !letterArtRevealed ? 'letters-focus' : ''} ${question.kind === 'letters' && (question.letters?.length ?? 0) > 10 ? 'letters-long' : ''}`}>
         <section className="question-panel">
           <h2>{keepPhrases(question.prompt)}</h2>
@@ -262,22 +230,12 @@ function App() {
       </div>
     </main>}
 
-    {game.phase === 'gift' && gift && lastWin && <main className="gift-main layout-width"><div className="gift-layout"><div className="gift-animation"><React.Suspense fallback={<div className="gift-loading" role="status" aria-label="Đang chuẩn bị vòng quay"><GiftIllustration/></div>}><CelebrationPlayer gift={gift} winner={lastWin.player} paused={giftPaused} replayVersion={giftReplayVersion} onReplay={replayGift} onRevealReady={() => setRevealReady(true)}/></React.Suspense></div><div className="gift-copy"><div className="section-kicker">Câu {lastWin.questionId} / 10, {lastWin.player}</div><h2>{revealReady ? gift.title : giftPaused ? 'Vòng quay tạm dừng' : 'Đang quay...'}</h2>{revealReady ? <div className="gift-award-number">Giải thưởng #{String(gift.id).padStart(2, '0')}</div> : <div className="gift-ticket pending"><span>Vòng quay may mắn</span><strong className="spinning-dots">● ● ●</strong></div>}{revealReady && gift.id === 8 && (soundOn ? <SpecialPrizeMusic/> : <div className="special-prize-muted">Bật âm thanh để nghe đoạn nhạc của giải này.</div>)}{revealReady && <button className={`delivery-button ${game.deliveredQuestionIds.includes(lastWin.questionId) ? 'delivered' : ''}`} disabled={game.deliveredQuestionIds.includes(lastWin.questionId)} onClick={() => markDelivered(lastWin.questionId)}>{game.deliveredQuestionIds.includes(lastWin.questionId) ? '✓ Đã trao quà' : '✓ Đánh dấu đã trao quà'}</button>}<button className="primary-button" disabled={!revealReady} onClick={nextQuestion}>{game.index === 9 ? 'Xem tổng kết' : 'Câu tiếp theo'} <span>↗</span></button></div></div></main>}
+    {game.phase === 'gift' && gift && lastWin && <main className="gift-main layout-width"><div className="gift-layout"><div className="gift-animation"><React.Suspense fallback={<div className="gift-loading" role="status" aria-label="Đang chuẩn bị vòng quay"><GiftIllustration/></div>}><CelebrationPlayer gift={gift} winner={lastWin.player} paused={giftPaused} replayVersion={giftReplayVersion} onReplay={replayGift} onRevealReady={() => setRevealReady(true)}/></React.Suspense></div><div className="gift-copy"><div className="section-kicker">{lastWin.player}</div><ol className="gift-steps" aria-label="Tiến trình mở quà"><li className={!revealReady ? 'is-current' : 'is-complete'}><b>1</b> Quay</li><li className={revealReady && !giftDelivered ? 'is-current' : revealReady ? 'is-complete' : ''}><b>2</b> Trúng</li><li className={giftDelivered ? 'is-current' : ''}><b>3</b> Đã trao</li></ol><h2 aria-live="polite">{revealReady ? gift.title : giftPaused ? 'Vòng quay tạm dừng' : 'Đang quay...'}</h2>{revealReady ? <div className="gift-award-number">Quà #{String(gift.id).padStart(2, '0')}</div> : <div className="gift-ticket pending"><span>Chờ kết quả</span><strong className="spinning-dots">● ● ●</strong></div>}{revealReady && gift.id === 8 && (soundOn ? <SpecialPrizeMusic/> : <div className="special-prize-muted">Bật âm thanh để nghe đoạn nhạc của giải này.</div>)}{revealReady && <button className={`delivery-button ${game.deliveredQuestionIds.includes(lastWin.questionId) ? 'delivered' : ''}`} disabled={game.deliveredQuestionIds.includes(lastWin.questionId)} onClick={() => markDelivered(lastWin.questionId)}>{game.deliveredQuestionIds.includes(lastWin.questionId) ? '✓ Đã trao quà' : '✓ Đánh dấu đã trao quà'}</button>}<button className="primary-button" disabled={!revealReady} onClick={nextQuestion}>{game.index === 9 ? 'Xem tổng kết' : 'Câu tiếp theo'} <span>↗</span></button></div></div></main>}
 
     {game.phase === 'finish' && <main className="finish-main layout-width"><div className="finish-head"><h1>Cảm ơn đã <em>chơi cùng!</em></h1><p>{game.deliveredQuestionIds.length} đã trao · {game.wins.length - game.deliveredQuestionIds.length} chờ trao · {gifts.length - game.wins.length} chưa mở</p></div><div className="winner-list">{game.wins.map(win => {const item = gifts.find(g => g.id === win.giftId); const delivered = game.deliveredQuestionIds.includes(win.questionId); return <div className="winner-row" key={win.questionId}><span className="winner-number">{String(win.questionId).padStart(2, '0')}</span><strong>{win.player}</strong><span>{item?.title}</span><button className={`summary-status ${delivered ? 'is-delivered' : ''}`} disabled={delivered} onClick={() => markDelivered(win.questionId)}>{delivered ? '✓ Đã trao' : 'Chưa trao ↗'}</button></div>;})}{gifts.filter(gift => !game.wins.some(win => win.giftId === gift.id)).map(gift => <div className="winner-row remaining-row" key={`remaining-${gift.id}`}><span className="winner-number">—</span><strong>Chưa mở</strong><span>{gift.title}</span><span className="summary-status">Còn lại</span></div>)}</div><div className="finish-actions"><button className="light-button" onClick={exportSummary}>Xuất danh sách CSV ↓</button><button className="light-button finish-restart" onClick={openReset}>Chơi một lượt mới ↗</button></div><div className="finish-illustration"><GiftIllustration open/></div></main>}
 
-    {hostOpen && <div className="modal-backdrop" role="presentation" onMouseDown={() => setHostOpen(false)}><div className="modal host-modal" role="dialog" aria-modal="true" aria-labelledby="host-title" tabIndex={-1} onMouseDown={event => event.stopPropagation()}><div className="host-head"><h2 id="host-title">Điều khiển MC</h2><button className="host-close" onClick={() => setHostOpen(false)} aria-label="Đóng điều khiển MC">×</button></div><p>Câu {Math.min(game.index + 1, questions.length)}/10 · {game.wins.length} quà đã mở · {game.deliveredQuestionIds.length} đã trao</p>{game.phase === 'gift' && <div className="host-actions"><button className="light-button" onClick={() => setGiftPaused(value => !value)}>{giftPaused ? '▶ Tiếp tục quay' : 'Ⅱ Tạm dừng quay'}</button><button className="light-button" onClick={() => {setGiftPaused(false); setGiftReplayVersion(v => v + 1); setRevealReady(false); setHostOpen(false);}}>↻ Quay lại</button>{revealReady && lastWin && !game.deliveredQuestionIds.includes(lastWin.questionId) && <button className="light-button" onClick={() => markDelivered(lastWin.questionId)}>✓ Đã trao quà</button>}</div>}{(game.phase === 'question' || game.phase === 'wrong') && <div className="host-actions"><button className="light-button" onClick={skipQuestion}>{skipArmed ? 'Xác nhận bỏ qua câu này' : 'Bỏ qua câu này ↗'}</button>{skipArmed && <button className="light-button" onClick={() => setSkipArmed(false)}>Giữ câu hỏi</button>}</div>}<div className="host-divider"/><div className="host-actions"><button className="light-button" onClick={openPreflight}>Kiểm tra trước tiệc ✓</button><button className="light-button" onClick={exportBackup}>Lưu lượt chơi ↓</button><button className="light-button" onClick={() => importRef.current?.click()}>Khôi phục lượt chơi ↑</button><input ref={importRef} className="host-file-input" type="file" accept="application/json,.json" onChange={event => {void importBackup(event.target.files?.[0]);}}/><button className="light-button" onClick={exportSummary}>Xuất danh sách CSV ↓</button>{game.phase !== 'welcome' && <button className="light-button" onClick={() => {setHostOpen(false); openReset();}}>Chơi lại từ đầu ↺</button>}</div>{importError && <p className="host-error" role="alert">{importError}</p>}</div></div>}
+    {hostOpen && <div className="modal-backdrop" role="presentation" onMouseDown={() => setHostOpen(false)}><div className="modal host-modal" role="dialog" aria-modal="true" aria-labelledby="host-title" tabIndex={-1} onMouseDown={event => event.stopPropagation()}><div className="host-head"><h2 id="host-title">Điều khiển MC</h2><button className="host-close" onClick={() => setHostOpen(false)} aria-label="Đóng điều khiển MC">×</button></div><p>Câu {Math.min(game.index + 1, questions.length)}/10 · {game.wins.length} quà đã mở · {game.deliveredQuestionIds.length} đã trao</p>{game.phase === 'gift' && <div className="host-actions"><button className="light-button" onClick={() => setGiftPaused(value => !value)}>{giftPaused ? '▶ Tiếp tục quay' : 'Ⅱ Tạm dừng quay'}</button><button className="light-button" onClick={() => {setGiftPaused(false); setGiftReplayVersion(v => v + 1); setRevealReady(false); setHostOpen(false);}}>↻ Quay lại</button>{revealReady && lastWin && !game.deliveredQuestionIds.includes(lastWin.questionId) && <button className="light-button" onClick={() => markDelivered(lastWin.questionId)}>✓ Đã trao quà</button>}</div>}{(game.phase === 'question' || game.phase === 'wrong') && <div className="host-actions"><button className="light-button" onClick={skipQuestion}>{skipArmed ? 'Xác nhận bỏ qua câu này' : 'Bỏ qua câu này ↗'}</button>{skipArmed && <button className="light-button" onClick={() => setSkipArmed(false)}>Giữ câu hỏi</button>}</div>}<div className="host-divider"/><div className="host-actions"><button className="light-button" onClick={exportBackup}>Lưu lượt chơi ↓</button><button className="light-button" onClick={() => importRef.current?.click()}>Khôi phục lượt chơi ↑</button><input ref={importRef} className="host-file-input" type="file" accept="application/json,.json" onChange={event => {void importBackup(event.target.files?.[0]);}}/><button className="light-button" onClick={exportSummary}>Xuất danh sách CSV ↓</button>{game.phase !== 'welcome' && <button className="light-button" onClick={() => {setHostOpen(false); openReset();}}>Chơi lại từ đầu ↺</button>}</div>{importError && <p className="host-error" role="alert">{importError}</p>}</div></div>}
 
-    {preflightOpen && <div className="modal-backdrop" role="presentation" onMouseDown={() => setPreflightOpen(false)}><div className="modal preflight-modal" role="dialog" aria-modal="true" aria-labelledby="preflight-title" tabIndex={-1} onMouseDown={event => event.stopPropagation()}>
-      <div className="preflight-head"><h2 id="preflight-title">Kiểm tra trước tiệc</h2><button className="host-close preflight-close" onClick={() => setPreflightOpen(false)} aria-label="Đóng kiểm tra">×</button></div>
-      <div className="preflight-list">
-        <div className="preflight-row"><span className={`preflight-dot ${offlineStatus.state === 'ready' ? 'is-ready' : ''}`} aria-hidden="true"/><span><strong>Chơi khi mất mạng</strong><small>{offlineStatus.state === 'checking' ? 'Đang lưu tài nguyên…' : offlineStatus.state === 'ready' ? `${offlineStatus.cached}/${offlineStatus.total} tệp đã lưu` : offlineStatus.state === 'unsupported' ? 'Chỉ kiểm tra trên bản đã đăng' : 'Chưa lưu đủ tài nguyên'}</small></span><button className="light-button" onClick={openPreflight}>Kiểm tra lại</button></div>
-        <div className="preflight-row"><span className={`preflight-dot ${storageOk ? 'is-ready' : ''}`} aria-hidden="true"/><span><strong>Lưu lượt chơi</strong><small>{storageOk ? 'Máy này lưu được tiến độ' : 'Không lưu được trên trình duyệt này'}</small></span><button className="light-button" onClick={exportBackup}>Tải bản sao</button></div>
-        <div className="preflight-row"><span className={`preflight-dot ${soundTested ? 'is-ready' : ''}`} aria-hidden="true"/><span><strong>Âm thanh</strong><small>{soundTested ? 'Đã phát tiếng thử' : 'Bấm thử và nghe trên loa'}</small></span><button className="light-button" onClick={() => {setSoundOn(true); setSoundEnabled(true); playSfx('stage'); setSoundTested(true);}}>Thử loa</button></div>
-        <div className="preflight-row"><span className={`preflight-dot ${fullscreenOn ? 'is-ready' : ''}`} aria-hidden="true"/><span><strong>Màn hình chiếu</strong><small>{fullscreenOn ? 'Đang toàn màn hình' : 'Bật khi chiếu lên sân khấu'}</small></span><button className="light-button" onClick={toggleFullscreen}>{fullscreenOn ? 'Thoát' : 'Toàn màn hình'}</button></div>
-      </div>
-      <p className="preflight-tip">Phím MC: H mở điều khiển · M âm thanh · F toàn màn hình · Space tạm dừng quay · → sang câu tiếp.</p>
-    </div></div>}
     {resetOpen && <div className="modal-backdrop" role="presentation" onMouseDown={() => setResetOpen(false)}><div ref={resetDialogRef} className="modal" role="dialog" aria-modal="true" aria-labelledby="reset-title" aria-describedby="reset-description" tabIndex={-1} onMouseDown={event => event.stopPropagation()}><h2 id="reset-title">Chơi lại từ đầu?</h2><p id="reset-description">Danh sách khách đã thắng và thứ tự quà hiện tại sẽ được xóa trên thiết bị này.</p><div><button className="light-button" onClick={() => setResetOpen(false)}>Giữ lượt chơi</button><button className="primary-button" onClick={reset}>Bắt đầu lại</button></div></div></div>}
     <footer className="footer"><Heart/></footer>
   </div>;

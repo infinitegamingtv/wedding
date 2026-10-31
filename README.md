@@ -15,7 +15,7 @@ Mở địa chỉ do Vite hiển thị, thường là `http://localhost:5173/`. 
 
 ## Trước khi chiếu
 
-Mở **Kiểm tra trước tiệc** ở màn đầu hoặc trong **MC ⚙**. Đợi trạng thái **Chơi khi mất mạng** báo đủ tệp, thử loa, bật toàn màn hình và tải bản sao lượt chơi. Sau lần tải đầu thành công, trình duyệt có thể mở lại game khi mất mạng trên chính thiết bị đó. Mỗi lần cập nhật web, hãy mở trang khi có mạng để tải bản mới trước khi ngắt mạng.
+Kết nối Internet, mở trang trên máy trình chiếu, bật toàn màn hình và thử âm thanh. MC có thể bắt đầu chơi ngay; không cần tải bộ tài nguyên trước. Trò chơi cần mạng để tải ảnh, nhạc và vòng quay khi sử dụng. Dùng **MC ⚙ → Lưu lượt chơi** nếu muốn có bản sao tiến độ.
 
 Phím tắt cho MC: `H` mở điều khiển, `M` bật/tắt âm thanh, `F` bật/tắt toàn màn hình, `Space` tạm dừng/tiếp tục vòng quay và `→` sang câu tiếp theo sau khi đã mở quà. Phím tắt không hoạt động khi hộp thoại đang mở.
 

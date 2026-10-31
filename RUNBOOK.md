@@ -2,10 +2,10 @@
 
 ## Trước buổi tiệc
 
-1. Mở web trên máy nối màn chiếu, chọn **Kiểm tra trước tiệc** và đợi đủ tài nguyên offline, rồi bật **Toàn màn hình**.
+1. Kết nối Internet, mở web trên máy nối màn chiếu và bật **Toàn màn hình**.
 2. Thử loa bằng nút **Âm thanh bật/tắt**; thử một vòng quay và video ở giải **Chắc chắn là chấm hết**.
 3. Mở **MC ⚙ → Lưu lượt chơi ↓** để có bản sao JSON trước khi bắt đầu và sau vài câu.
-4. Nếu dùng GitHub Pages, mở web khi có mạng và đợi kiểm tra offline báo đủ tệp. Sau đó thử ngắt Internet rồi tải lại trang. Nếu dùng localhost, vẫn cần giữ máy chủ localhost đang chạy.
+4. Giữ kết nối Internet trong lúc chơi. Nếu dùng localhost, vẫn cần giữ máy chủ localhost đang chạy.
 
 ## Khi chơi
 
@@ -20,4 +20,4 @@
 
 Kiểm tra trên màn chiếu thật ở 1920×1080 và 1280×720; thêm cửa sổ 800×450 để phát hiện tràn chữ. Chạy qua cả 10 câu, ưu tiên câu 3, 5, 6 và ba câu xếp chữ 8–10. Ở mỗi màn, xác nhận chữ và nút chính không bị che; câu xếp chữ chỉ hiện minh họa sau khi chọn **Hiện đáp án**. Kiểm tra nút MC và màn tổng kết sau khi bỏ qua một câu.
 
-Mã đã qua TypeScript/Vite build và kiểm tra dữ liệu bản sao. Trình duyệt điều khiển tự động không hoạt động trong phiên Codex này, nên tổng duyệt trực quan cần làm trên máy trình chiếu.
+Tổng duyệt lại trên máy trình chiếu thật trước khi khách bắt đầu chơi.
