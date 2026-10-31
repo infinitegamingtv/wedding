@@ -2,7 +2,7 @@
 :root{color:#fff5e8;background:#130b1b}
 body{background:#130b1b;min-height:100vh;display:flex;align-items:center;justify-content:center}
 #root{width:100%;display:flex;justify-content:center}
-.site-shell{container-type:size;position:relative;width:min(100vw,177.77778vh);height:min(100vh,56.25vw);min-height:0;margin:auto;overflow:hidden;background:linear-gradient(90deg,#210e29a8 0%,#210e2955 45%,#210e29a8 100%),url('/assets/wedding-stage.png') center/cover no-repeat;box-shadow:0 0 0 2px #ac704a,0 0 90px #000b}
+.site-shell{container-type:size;position:relative;width:min(100vw,177.77778vh);height:min(100vh,56.25vw);min-height:0;margin:auto;overflow:hidden;background:#f7e8eb;box-shadow:0 0 0 2px #ac704a,0 0 90px #000b}
 .site-shell:fullscreen{width:100vw;height:100vh}
 @media(max-width:800px){.fullscreen-button small{display:none}}
 .site-shell::before{content:"";pointer-events:none;position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,transparent 35%,#180a21aa 100%);z-index:0}

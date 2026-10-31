@@ -36,6 +36,54 @@ const save = (filename, samples) => {
   for (let i = 0; i < samples.length; i++) bytes.writeInt16LE(Math.max(-1, Math.min(1, samples[i])) * 32767, 44 + i * 2);
   fs.writeFileSync(path.join(destination, filename), bytes);
 };
+const cinematicRiser = () => {
+  const duration = 2.55;
+  const samples = new Float32Array(Math.round(duration * rate));
+  let seed = 9127, smoothNoise = 0, phase = 0;
+  for (let i = 0; i < samples.length; i++) {
+    const t = i / rate, p = t / duration;
+    seed = (1664525 * seed + 1013904223) >>> 0;
+    smoothNoise = smoothNoise * .7 + ((seed / 2147483648) - 1) * .3;
+    phase += 2 * Math.PI * (130 + 1200 * p * p) / rate;
+    const pulse = .72 + .28 * Math.sin(2 * Math.PI * (5 * t + 2.5 * t * t));
+    const envelope = p ** 1.25 * Math.min(1, (duration - t) / .09);
+    samples[i] = (Math.sin(phase) * .23 + smoothNoise * .34 + Math.sin(phase * .5) * .13) * envelope * pulse;
+  }
+  return samples;
+};
+const cinematicDrums = () => {
+  const samples = new Float32Array(Math.round(1.3 * rate));
+  const hits = [0, .32, .57, .75, .89, 1.01];
+  let seed = 337;
+  for (let i = 0; i < samples.length; i++) {
+    const t = i / rate;
+    seed = (1664525 * seed + 1013904223) >>> 0;
+    const noise = seed / 2147483648 - 1;
+    for (const hit of hits) {
+      const elapsed = t - hit;
+      if (elapsed < 0 || elapsed > .27) continue;
+      const weight = .62 + hit * .25;
+      samples[i] += (Math.sin(2 * Math.PI * (74 - 24 * elapsed) * elapsed) * .32 + noise * .1) * Math.exp(-elapsed * 18) * weight;
+    }
+  }
+  return samples;
+};
+const cinematicImpact = () => {
+  const samples = new Float32Array(Math.round(1.55 * rate));
+  let seed = 5761, lowNoise = 0, phase = 0;
+  for (let i = 0; i < samples.length; i++) {
+    const t = i / rate;
+    seed = (1664525 * seed + 1013904223) >>> 0;
+    const noise = seed / 2147483648 - 1;
+    lowNoise = lowNoise * .86 + noise * .14;
+    phase += 2 * Math.PI * (50 + 105 * Math.exp(-t * 18)) / rate;
+    const kick = Math.sin(phase) * .54 * Math.exp(-t * 7);
+    const shimmer = (noise - lowNoise) * .2 * Math.exp(-t * 3.8);
+    const chord = (Math.sin(2 * Math.PI * 392 * t) + Math.sin(2 * Math.PI * 494 * t) + Math.sin(2 * Math.PI * 587 * t)) * .08 * Math.exp(-t * 2.4);
+    samples[i] = (kick + shimmer + chord) * Math.min(1, t / .009);
+  }
+  return samples;
+};
 
 const beat = .6;
 const chords = [[62, 66, 69], [59, 62, 66], [55, 59, 62], [57, 61, 64]];
@@ -63,4 +111,17 @@ save('sfx-correct.wav', render(1.1, [
   {at: .37, duration: .65, midi: 86, kind: 'chime', volume: .23},
 ]));
 save('sfx-reveal.wav', render(1.35, Array.from({length: 13}, (_, i) => ({at: i * .07, duration: .5 + random(i) * .4, midi: 74 + Math.floor(random(i + 30) * 17), kind: 'chime', volume: .075}))));
-console.log('Created original wedding BGM and five SFX files.');
+save('sfx-tick.wav', render(.11, [{at: 0, duration: .1, midi: 82, kind: 'chime', volume: .22}]));
+save('sfx-drum.wav', cinematicDrums());
+save('sfx-riser.wav', cinematicRiser());
+save('sfx-impact.wav', cinematicImpact());
+save('sfx-stage.wav', render(1.75, [
+  {at: 0, duration: 1.25, midi: 62, kind: 'pad', volume: .08},
+  {at: 0, duration: 1.25, midi: 66, kind: 'pad', volume: .08},
+  {at: 0, duration: 1.25, midi: 69, kind: 'pad', volume: .08},
+  {at: .12, duration: .65, midi: 74, kind: 'chime', volume: .16},
+  {at: .3, duration: .7, midi: 78, kind: 'chime', volume: .16},
+  {at: .48, duration: .82, midi: 81, kind: 'chime', volume: .17},
+  {at: .72, duration: .9, midi: 86, kind: 'chime', volume: .17},
+]));
+console.log('Created original wedding BGM and ten SFX files.');
